@@ -2,7 +2,8 @@ const {
   ActionRowBuilder,
   StringSelectMenuBuilder,
   ButtonBuilder,
-  ButtonStyle
+  ButtonStyle,
+  EmbedBuilder
 } = require("discord.js");
 
 const ms = require("ms");
@@ -17,43 +18,26 @@ module.exports = {
         .setCustomId("ticket_select")
         .setPlaceholder("Create a ticket")
         .addOptions([
-          {
-            label: "Support",
-            description: "Get help from staff",
-            value: "support"
-          },
-          {
-            label: "Report",
-            description: "Report a user",
-            value: "report"
-          },
-          {
-            label: "Other",
-            description: "Other issues",
-            value: "other"
-          }
+          { label: "Support", value: "support" },
+          { label: "Report", value: "report" }
         ]);
 
-      const row = new ActionRowBuilder().addComponents(menu);
-
       return message.channel.send({
-        content: "🎫 **Ticket Panel**\nSelect a category below:",
-        components: [row]
+        content: "🎫 Ticket Panel",
+        components: [new ActionRowBuilder().addComponents(menu)]
       });
     }
 
     // ================= ✅ VERIFY PANEL =================
     if (args[0] === "verify") {
-      const button = new ButtonBuilder()
+      const btn = new ButtonBuilder()
         .setCustomId("verify")
         .setLabel("Verify")
         .setStyle(ButtonStyle.Success);
 
-      const row = new ActionRowBuilder().addComponents(button);
-
       return message.channel.send({
-        content: "✅ Click the button to verify yourself",
-        components: [row]
+        content: "Click to verify",
+        components: [new ActionRowBuilder().addComponents(btn)]
       });
     }
 
@@ -61,25 +45,15 @@ module.exports = {
     if (args[0] === "help") {
       const menu = new StringSelectMenuBuilder()
         .setCustomId("help_menu")
-        .setPlaceholder("Select a category")
+        .setPlaceholder("Select category")
         .addOptions([
-          {
-            label: "Moderation",
-            value: "mod",
-            description: "Ban, Kick, Timeout, etc"
-          },
-          {
-            label: "Systems",
-            value: "systems",
-            description: "Tickets, Giveaway, Verify"
-          }
+          { label: "Moderation", value: "mod" },
+          { label: "Systems", value: "systems" }
         ]);
 
-      const row = new ActionRowBuilder().addComponents(menu);
-
       return message.channel.send({
-        content: "📋 **Help Panel**",
-        components: [row]
+        content: "Help Panel",
+        components: [new ActionRowBuilder().addComponents(menu)]
       });
     }
 
@@ -92,25 +66,43 @@ module.exports = {
         return message.reply("Usage: +panel giveaway <time> <prize>");
       }
 
-      const giveawayMsg = await message.channel.send(
-        `🎉 **GIVEAWAY** 🎉\nPrize: **${prize}**\nReact with 🎉\nEnds in: ${time}`
-      );
-
-      await giveawayMsg.react("🎉");
+      const msg = await message.channel.send(`🎉 ${prize}\nReact 🎉`);
+      await msg.react("🎉");
 
       setTimeout(async () => {
-        const fetched = await giveawayMsg.fetch();
-        const users = await fetched.reactions.cache.get("🎉").users.fetch();
-
-        const validUsers = users.filter(u => !u.bot);
-        const winner = validUsers.random();
-
-        if (!winner) {
-          return message.channel.send("❌ No valid participants.");
-        }
-
-        message.channel.send(`🏆 Winner: ${winner}`);
+        const users = await msg.reactions.cache.get("🎉").users.fetch();
+        const winner = users.filter(u => !u.bot).random();
+        message.channel.send(`Winner: ${winner}`);
       }, ms(time));
+    }
+
+    // ================= 📩 STAFF APPLY PANEL =================
+    if (args[0] === "apply") {
+      const btn = new ButtonBuilder()
+        .setCustomId("apply_start")
+        .setLabel("Apply for Staff")
+        .setStyle(ButtonStyle.Primary);
+
+      return message.channel.send({
+        content: "📩 Click below to apply for staff",
+        components: [new ActionRowBuilder().addComponents(btn)]
+      });
+    }
+
+    // ================= 🎤 VOICE JOIN =================
+    if (args[0] === "join") {
+      const vc = message.member.voice.channel;
+      if (!vc) return message.reply("Join a voice channel first!");
+
+      const { joinVoiceChannel } = require("@discordjs/voice");
+
+      joinVoiceChannel({
+        channelId: vc.id,
+        guildId: vc.guild.id,
+        adapterCreator: vc.guild.voiceAdapterCreator
+      });
+
+      return message.reply("🎤 Joined your voice channel!");
     }
 
   }
