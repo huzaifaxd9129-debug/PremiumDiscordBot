@@ -22,7 +22,7 @@ module.exports = {
     if (cmd === "ticket") {
 
       const embed = new EmbedBuilder()
-        .setTitle("🎫 SUPPORT TICKET SYSTEM")
+        .setTitle("🎫 SUPPORT SYSTEM")
         .setDescription(`
 **Need help? Open a ticket below**
 
@@ -91,7 +91,7 @@ Welcome to the server!
     if (cmd === "apply") {
 
       const embed = new EmbedBuilder()
-        .setTitle("📩 STAFF APPLICATION SYSTEM")
+        .setTitle("📩 STAFF APPLICATIONS")
         .setDescription(`
 **Want to join staff team?**
 
