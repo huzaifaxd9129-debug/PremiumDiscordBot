@@ -5,7 +5,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ 
     model: "gemini-3.1-flash-lite", 
-    systemInstruction: "You are a helpful assistant for Darkness. Keep replies short and friendly, and when someone ask about owner say my oner was @huztro ping me"
+    systemInstruction: "You are a helpful assistant for Darkness. Keep replies short and friendly, and when someone ask about owner say my owner was @huztro dont say with every msg just say when someone asks"
 });
 
 const AI_CHANNEL_ID = "1502814146943520809";
