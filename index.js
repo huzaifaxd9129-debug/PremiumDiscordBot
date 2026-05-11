@@ -43,30 +43,27 @@ client.once(Events.ClientReady, (c) => {
   ];
 
   let i = 0;
-
-  // 🔁 STATUS TEXT ROTATION (unchanged)
-  setInterval(() => {
-    client.user.setPresence({
-      activities: [{
-        name: statuses[i++ % statuses.length],
-        type: ActivityType.Playing
-      }],
-      status: "online"
-    });
-  }, 10000);
-
-  // 🔥 ONLINE ↔ DND TOGGLE (NEW ADDITION)
   let toggle = true;
 
+  // 🔥 ONLY ONE interval for EVERYTHING (clean control)
   setInterval(() => {
+
+    // rotate text every 5 sec
+    const activity = statuses[i++ % statuses.length];
+
+    // toggle online / dnd every 1 min
+    if (i % 12 === 0) { 
+      // 12 × 5sec = 60 sec
+      toggle = !toggle;
+    }
+
     client.user.setPresence({
       activities: [{
-        name: statuses[i % statuses.length],
+        name: activity,
         type: ActivityType.Playing
       }],
       status: toggle ? "online" : "dnd"
     });
 
-    toggle = !toggle;
-  }, 60 * 1000); // 1 minute switch
+  }, 5000); // 5 seconds tick
 });
