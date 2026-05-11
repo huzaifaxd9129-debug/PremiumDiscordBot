@@ -11,7 +11,6 @@ const {
 const LOG_CHANNEL_ID = "1500169350307647488";
 
 module.exports = {
-  name: "panel",
   async execute(message, args, client) {
 
     const cmd = args[0];
