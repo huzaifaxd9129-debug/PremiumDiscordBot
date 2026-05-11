@@ -67,3 +67,5 @@ client.once(Events.ClientReady, (c) => {
 
   }, 5000); // 5 seconds tick
 });
+
+client.login(config.token);
