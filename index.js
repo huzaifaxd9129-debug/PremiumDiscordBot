@@ -33,14 +33,40 @@ for (const file of eventFiles) {
 // READY SYSTEM
 client.once(Events.ClientReady, (c) => {
   console.log(`✅ ${c.user.tag} is online and modular!`);
-  const statuses = ["Made By Huztro", "Moderating Premium Servers", "Ensuring Uptime Stability", "Exculting System Diagnostics", "Optimizing Performance Modules"];
+
+  const statuses = [
+    "Made By Huztro",
+    "Moderating Premium Servers",
+    "Ensuring Uptime Stability",
+    "Exculting System Diagnostics",
+    "Optimizing Performance Modules"
+  ];
+
   let i = 0;
+
+  // 🔁 STATUS TEXT ROTATION (unchanged)
   setInterval(() => {
     client.user.setPresence({
-      activities: [{ name: statuses[i++ % statuses.length], type: ActivityType.Playing }],
+      activities: [{
+        name: statuses[i++ % statuses.length],
+        type: ActivityType.Playing
+      }],
       status: "online"
     });
   }, 10000);
-});
 
-client.login(config.token);
+  // 🔥 ONLINE ↔ DND TOGGLE (NEW ADDITION)
+  let toggle = true;
+
+  setInterval(() => {
+    client.user.setPresence({
+      activities: [{
+        name: statuses[i % statuses.length],
+        type: ActivityType.Playing
+      }],
+      status: toggle ? "online" : "dnd"
+    });
+
+    toggle = !toggle;
+  }, 60 * 1000); // 1 minute switch
+});
