@@ -33,7 +33,7 @@ for (const file of eventFiles) {
 // READY SYSTEM
 client.once(Events.ClientReady, (c) => {
   console.log(`✅ ${c.user.tag} is online and modular!`);
-  const statuses = ["👑 Made By Huztro", "⚡ Moderating Premium Servers"];
+  const statuses = ["Made By Huztro", "Moderating Premium Servers", "Ensuring Uptime Stability", "Exculting System Diagnostics", "Optimizing Performance Modules"];
   let i = 0;
   setInterval(() => {
     client.user.setPresence({
