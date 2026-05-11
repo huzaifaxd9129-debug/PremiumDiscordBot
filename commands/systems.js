@@ -11,7 +11,7 @@ const {
 const LOG_CHANNEL_ID = "1500169350307647488";
 
 module.exports = {
-    name: "!",
+    name: "tsetup", "verifypanel", "sendappofstaff", "gstart", "voicejoin", "help",
   async execute(message, args, client) {
 
     const cmd = args[0];
@@ -19,7 +19,7 @@ module.exports = {
     // =========================================================
     // 🎟️ BIG TICKET PANEL
     // =========================================================
-    if (cmd === "ticket") {
+    if (cmd === "tsetup") {
 
       const embed = new EmbedBuilder()
         .setTitle("🎫 SUPPORT SYSTEM")
@@ -142,7 +142,7 @@ You are now verified!
     // =========================================================
     // 📋 BIG STAFF APPLY PANEL
     // =========================================================
-    if (cmd === "apply") {
+    if (cmd === "sendappofstaff") {
 
       const embed = new EmbedBuilder()
         .setTitle("📩 STAFF APPLICATIONS")
@@ -174,7 +174,7 @@ You are now verified!
     // =========================================================
     // 🎉 BIG GIVEAWAY PANEL
     // =========================================================
-    if (cmd === "giveaway") {
+    if (cmd === "gstart") {
 
       const embed = new EmbedBuilder()
         .setTitle("🎉 GIVEAWAY SYSTEM")
@@ -205,7 +205,7 @@ You are now verified!
     // =========================================================
     // 🎤 VOICE JOIN SYSTEM (NEW ADDED)
     // =========================================================
-    if (cmd === "join") {
+    if (cmd === "voicejoin") {
 
       const vc = message.member.voice.channel;
 
