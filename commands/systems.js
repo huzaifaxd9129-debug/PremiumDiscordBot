@@ -58,32 +58,86 @@ module.exports = {
     // =========================================================
     // 🔐 BIG VERIFY PANEL
     // =========================================================
-    if (cmd === "verify") {
+if (cmd === "verifypanel") {
 
-      const embed = new EmbedBuilder()
-        .setTitle("🔐 VERIFICATION SYSTEM")
-        .setDescription(`
+  // 👇 Replace with your role ID
+  const verifyRole = "1503438455680667688";
+
+  const embed = new EmbedBuilder()
+    .setTitle("🔐 SERVER VERIFICATION")
+    .setDescription(`
 Welcome to the server!
 
-✔ Click verify to unlock:
-• Chat access
-• Full server features
-• Member roles
+✅ Click the button below to verify yourself and unlock:
 
-⚠ You must verify to continue
-        `)
-        .setColor("Green");
+• 💬 Chat Access
+• 🎉 Full Server Features
+• 👥 Member Permissions
+• 🚀 Exclusive Channels
 
-      const btn = new ButtonBuilder()
-        .setCustomId("verify")
-        .setLabel("VERIFY NOW")
-        .setStyle(ButtonStyle.Success);
+⚠️ Verification is required to continue.
+    `)
+    .setColor("#00ff88")
+    .setFooter({ text: `${message.guild.name} Verification System` })
+    .setTimestamp();
 
-      return message.channel.send({
-        embeds: [embed],
-        components: [new ActionRowBuilder().addComponents(btn)]
+  const btn = new ButtonBuilder()
+    .setCustomId("verify_button")
+    .setLabel("VERIFY NOW")
+    .setEmoji("✅")
+    .setStyle(ButtonStyle.Success);
+
+  await message.channel.send({
+    embeds: [embed],
+    components: [new ActionRowBuilder().addComponents(btn)]
+  });
+}
+
+// ================= VERIFY BUTTON =================
+
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isButton()) return;
+
+  if (interaction.customId === "verify_button") {
+
+    const verifyRole = "1503438455680667688";
+
+    // Already verified
+    if (interaction.member.roles.cache.has(verifyRole)) {
+      return interaction.reply({
+        content: "⚠️ You are already verified.",
+        ephemeral: true
       });
     }
+
+    try {
+      await interaction.member.roles.add(verifyRole);
+
+      const verifiedEmbed = new EmbedBuilder()
+        .setTitle("✅ VERIFIED SUCCESSFULLY")
+        .setDescription(`
+You are now verified!
+
+🎉 Enjoy the server and have fun.
+        `)
+        .setColor("Green")
+        .setTimestamp();
+
+      interaction.reply({
+        embeds: [verifiedEmbed],
+        ephemeral: true
+      });
+
+    } catch (err) {
+      console.error(err);
+
+      interaction.reply({
+        content: "❌ Failed to give verify role.",
+        ephemeral: true
+      });
+    }
+  }
+});
 
     // =========================================================
     // 📋 BIG STAFF APPLY PANEL
